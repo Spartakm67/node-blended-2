@@ -1,11 +1,17 @@
 // /api/v1/alcohols
 const { request } = require("http");
 const acloControler = require("../controlers/AlcoControler");
+const rolesMiddleware = require("../midelwares/rolesMiddleware");
 
 const alcoRouter = require("express").Router();
 
 //get all
-alcoRouter.get("/alcohols", acloControler.getAll);
+alcoRouter.get(
+  "/alcohols",
+  rolesMiddleware(["MODERATOR", "USER", "ADMIN"]),
+  acloControler.getAll
+);
+// ["MODERATOR", "ADMIN", "CEO", "DELIVERY"];
 
 //get one
 alcoRouter.get("/alcohols/:id", acloControler.getById);
